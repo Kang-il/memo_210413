@@ -1,0 +1,14 @@
+@charset "UTF-8";
+
+#wrap{width:1200px; height:1000px; margin:auto;}
+
+header{height:100px;}
+header .logo{width:300px; height:100px;}
+header .login-info{width:900px; height:100px;}
+
+.contents{}
+.contents .sign-up-form{width:500px; margin:auto;}
+.contents .is-duplication-btn{border-radius: 10px; font-size: 13px; border:0px; height:30px;}
+
+footer{height:100px;}
+footer .copyright{height:100px;}
