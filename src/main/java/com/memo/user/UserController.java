@@ -2,6 +2,9 @@ package com.memo.user;
 
 import java.util.Date;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.memo.common.EncryptUtils;
 import com.memo.user.bo.UserBO;
+
 
 
 
@@ -72,4 +76,19 @@ public class UserController {
 		//3. redirect @ResponseBody 가 아닌 일반 @Controller 에서 작동
 		return"redirect:/user/sign_in_view";
 	}
+	@RequestMapping("/sign_out")
+	public String signOut(HttpServletRequest request) {
+		HttpSession session=request.getSession();
+//		
+//		session.removeAttribute("userLoginId");
+//		session.removeAttribute("userName");
+//		session.removeAttribute("userId");
+		
+		session.invalidate();
+
+		
+		return"redirect:/user/sign_in_view";
+	}
+	
+	
 }

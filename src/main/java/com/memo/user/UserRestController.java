@@ -1,8 +1,12 @@
 package com.memo.user;
 
 
-import java.util.HashMap;
+import java.util.HashMap;		
 import java.util.Map;
+
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -52,4 +56,40 @@ public class UserRestController {
 		result.put("result", "성공");
 		return result;
 	}
+	
+	@PostMapping("/sign_in")
+	public Map<String,String> signIn( @RequestParam("loginId") String loginId
+									 ,@RequestParam("password")String password
+									 ,HttpServletRequest request){
+		
+		Map<String,String> result=new HashMap<>();
+		//1. password MD5로 해싱한다.
+			String encryptedPassword = EncryptUtils.md5(password);
+			
+		//2. loginId 와 password를 가져와 있으면 로그인 성공 -- DB연동하여 확인
+			User user=userBO.getUserByLoginIdAndPassword(loginId, encryptedPassword);
+		//3. 성공시 Session 에 저장하여 로그인 상태를 유지한다. 
+			//쿠키와 세션
+			
+			if(user!=null) {
+				HttpSession session=request.getSession();
+				session.setAttribute("userLoginId",user.getLoginId());
+				session.setAttribute("userName", user.getName());
+				session.setAttribute("userId", user.getId());
+				
+				//성공시 보내줄 값 넣기
+				result.put("result", "success");
+		//4. 실패시 Session 저장하지 않고 fail result 반환	
+			}else {
+				//성공시 실패시 값 넣기
+				result.put("result", "fail");
+				result.put("message", "존재하지 않는 사용자 입니다.");
+			}
+		
+		
+		return result;
+	}
+	
+
+	
 }

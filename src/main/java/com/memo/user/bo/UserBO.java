@@ -17,4 +17,7 @@ public class UserBO {
 	public void addUser(String loginId, String password, String name, String email) {
 		userDAO.insertUser(loginId, password, name, email);
 	}
+	public User getUserByLoginIdAndPassword(String loginId,String Password) {
+		return userDAO.selectUserByLoginIdAndPassword(loginId, Password);
+	}
 }
