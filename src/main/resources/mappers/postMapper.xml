@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+ 
+ <mapper namespace="com.memo.post.dao.PostDAO">
+ 
+ 	<!-- 해당 유저의 아이디값으로 유저 post를 모두 가져옴 -->
+ 	<select id="selectPostListByUserId" parameterType="int" resultType="com.memo.post.model.Post">
+ 		SELECT 
+ 			`id`
+ 			,`userId`
+ 			,`subject`
+ 			,`content`
+ 			,`imagePath`
+ 			,`createdAt`
+ 			,`updatedAt`
+		FROM
+			`post`
+		WHERE
+			`userId`=#{userId}
+ 	</select>
+ 	
+ </mapper>

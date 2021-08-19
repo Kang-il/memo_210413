@@ -8,7 +8,7 @@
 <div class="d-flex p-4">
 
 	<div class="logo">
-		<h1 class="text-white font-weight-bold">메모게시판</h1>
+		<a href="/post/post_list_view" class="text-white"><h1 class="text-white font-weight-bold">메모게시판</h1></a>
 	</div>
 	
 	<c:if test="${userName ne null}">
