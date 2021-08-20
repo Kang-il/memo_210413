@@ -11,5 +11,9 @@ import com.memo.post.model.Post;
 public interface PostDAO {
 	
  public List<Post> selectPostListByUserId(@Param("userId") int userId);
+ public int insertPost(@Param("userId") int userId
+		 			  ,@Param("subject") String subject
+		 			  ,@Param("content")String content
+		 			  ,@Param("imagePath") String imagePath);
  
 }
