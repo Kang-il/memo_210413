@@ -1,6 +1,6 @@
 package com.memo.common;
 
-import java.io.File;
+import java.io.File;	
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -48,12 +48,26 @@ public class FileManagerService {
 			Files.write(path, bytes); 
 			
 			//3. imageURL 만들기
-			
-			
-			
-			
+
 		//4. 반환하기
 		return "/images/" + directoryName+file.getOriginalFilename();
+	}
+	
+	//파일삭제 메서드
+	public void deleteFile(String imagePath) throws IOException{
+		
+		Path path=Paths.get(FILE_UPLOAD_PATH+imagePath.replace("/images/" , ""));
+		//파일 존재여부 
+		if(Files.exists(path)) {//있으면 제거
+			//이미지 삭제
+			Files.delete(path);
+			//디렉토리 삭제
+			path=path.getParent();
+			if(Files.exists(path)) {//있으면 제거
+				Files.delete(path);
+			}
+			
+		}
 	}
 	
 }

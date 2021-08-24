@@ -6,7 +6,7 @@
  <mapper namespace="com.memo.post.dao.PostDAO">
  
  	<!-- 해당 유저의 아이디값으로 유저 post를 모두 가져옴 -->
- 	<select id="selectPostListByUserId" parameterType="int" resultType="com.memo.post.model.Post">
+ 	<select id="selectPostListByUserId" parameterType="map" resultType="com.memo.post.model.Post">
  		SELECT 
  			`id`
  			,`userId`
@@ -19,7 +19,58 @@
 			`post`
 		WHERE
 			`userId`=#{userId}
+			
+			<!-- 페이징이 없는 경우 (최초 화면)-->
+			<if test="direction==null">
+		ORDER BY `id` DESC	
+			</if>
+			
+	<!-- 이전을 클릭 했을 때 -->
+	<if test="direction=='prev'">
+		<![CDATA[
+		AND `id` > #{standardId} 
+		]]>
+		ORDER BY `id` ASC
+	</if>
+	
+	<!-- 다음을 클릭 했을 때 -->
+	<if test="direction == 'next'">
+		<![CDATA[
+		AND `id` < #{standardId} 
+		]]>
+		ORDER BY `id` DESC
+	</if>	
+		LIMIT ${limit}
  	</select>
+ 	
+ 	<select id="selectPostByPostIdAndUserId" parameterType="int" resultType="com.memo.post.model.Post">
+ 		SELECT 
+ 			`id`
+ 			,`userId`
+ 			,`subject`
+ 			,`content`
+ 			,`imagePath`
+ 			,`createdAt`
+ 			,`updatedAt`
+		FROM
+			`post`
+		WHERE
+			`id`=#{postId}
+		AND
+			`userId`=#{userId}
+ 	</select>
+ 	
+ 	<select id="selectPostIdByUserIdAndSort" parameterType="map" resultType="int">
+ 		SELECT
+ 			`id`
+ 		FROM
+ 			`post`
+ 		WHERE
+ 			`userId`=#{userId}
+ 		ORDER BY `id` ${sort}
+ 		LIMIT 1
+ 	</select>
+ 	
 	<insert id="insertPost" parameterType="map">
 		INSERT INTO
 			`post`
@@ -41,4 +92,29 @@
 				,NOW()
 			)
 	</insert>
+	
+	<update id="updatePost" parameterType="map">
+		UPDATE
+			`post`
+		SET
+			`subject`=#{subject}
+			,`content`=#{content}
+			<!-- imagePath가 null이 아닐 때만 수정한다 -->
+			<if test="imagePath != null">
+			,`imagePath`=#{imagePath}
+			</if>
+			,`updatedAt`=NOW()
+		WHERE
+			`id`=#{postId}
+		AND
+			`userId`=#{userId}
+	</update>
+	
+	<delete id="deletePost" parameterType="int">
+		DELETE FROM
+			`post`
+		WHERE
+			`id`=#{postId}
+	</delete>
+	
  </mapper>

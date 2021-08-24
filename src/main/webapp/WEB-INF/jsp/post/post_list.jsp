@@ -6,7 +6,7 @@
 
 <div class="d-flex justify-content-center">
     <div class="col-12">
-		<h1 class="text-center">글 목록</h1>
+		<h1 class="text-center my-4">글 목록</h1>
 		<table class="table table-hover text-center">
 			<thead>
 				<tr>
@@ -17,25 +17,35 @@
 				</tr>
 			</thead>
 			<tbody>
-				<c:if test="${listSize eq 0}">
-				
+				<c:if test="${listEmpty eq true}">
+
+					<td colspan="4">글이 없습니다.</td>
+					
 				</c:if>
-				<c:if test="${listSize ne 0}">
+				<c:if test="${listEmpty eq false}">
 					<c:forEach var="post" items="${postList}">
 						<tr>
 							<td>${post.id}</td>
 							<td><a href="/post/post_detail_view?postId=${post.id}">${post.subject}</a></td>
 							<td>
-								<fmt:formatDate value="${post.createdAt}" pattern="yyyy년 MM월 dd일 hh:mm:ss"/>
+								<fmt:formatDate value="${post.createdAt}" pattern="yyyy년 MM월 dd일 kk:mm:ss"/>
 							</td>
 							<td>
-								<fmt:formatDate value="${post.updatedAt}" pattern="yyyy년 MM월 dd일 hh:mm:ss"/>
+								<fmt:formatDate value="${post.updatedAt}" pattern="yyyy년 MM월 dd일 kk:mm:ss"/>
 							</td>
 						</tr>
 					</c:forEach>
 				</c:if>
 			</tbody>
-		</table>    
+		</table>
+		<div class="d-flex justify-content-center">
+			<c:if test="${prevId ne 0}">
+				<a href="/post/post_list_view?prevId=${prevId}" class="mr-5">&lt;&lt; 이전</a>
+			</c:if>
+			<c:if test="${nextId ne 0 }">
+				<a href="/post/post_list_view?nextId=${nextId}">다음 &gt;&gt; </a>
+			</c:if>
+		</div>    
     </div>
 </div>
 		<div class="d-flex justify-content-end my-3">
